@@ -1,7 +1,10 @@
 **Robolabra joulu 2014**  
 **Suunnitelma**
 
-Aiheena robotin kanssa pelattava peli, jossa pitää rakentaa sellainen maailma, jossa robotti pystyy liikkumaan ja suorittamaan tehtäviä. Robotti suorittaisi siis erilaisia ohjelmia, joita pelaajan tehtävä on opetella tulkitsemaan. 
+"Aiheena robotin kanssa pelattava peli, jossa pitää rakentaa sellainen maailma, jossa robotti pystyy liikkumaan ja suorittamaan tehtäviä. Robotti suorittaisi siis erilaisia ohjelmia, joita pelaajan tehtävä on opetella tulkitsemaan. "
+
+Tämän verran alkuperäisestä suunnitelmasta jäi siis jäljelle. Alla vielä loppu, mutta dokumentaatiosta näkee, mihin suuntaan projekti lopulta lähti...
+
 Dokumentaatioon tulisi mukana helppolukuinen esitys robotin taidoista (eli asennetusta ohjelmasta, mutta yksinkertaisemmin esitettynä, esim. Scratch-tyyppisinä palikoina), esim. että robotti osaa selvitä tietynlaisesta sokkelosta, ja pelaajan tehtävä on rakentaa sille vaikkapa huonekaluista maailma, jossa se voi toteuttaa ohjelmansa. Suunnistaminen toteutettaisiin alustavasti etäisyyssensorin avulla, mutta kompassikin olisi tietysti ihan kätevä.
 Pelissä olisi useita eri tasoja, jotka valittaisiin vaikkapa värikoodein.
 
