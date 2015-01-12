@@ -21,7 +21,11 @@ public class Saveltaja {
             public void run() {
                 while(true) {
                     if (Button.waitForPress() == Button.ID_ESCAPE) {
-                        NXT.shutDown();
+                    	try {
+                    		NXT.shutDown();
+                    	} catch (NullPointerException ex) { 
+                    		NXT.shutDown();
+                    	}
                     }
                 }
             }
@@ -47,6 +51,7 @@ public class Saveltaja {
 		LCD.drawString("Kiitos soitosta!", 0, 3);
 		Delay.msDelay(2000);
 		LCD.clear();
+		System.exit(0);
 	}
 	public boolean alku() {
 		LCD.drawString("Tervetuloa", 0, 0);
@@ -56,6 +61,7 @@ public class Saveltaja {
 		LCD.drawString("kappaleita?", 0, 4);
 		LCD.drawString("Oikea: joo", 0, 5);
 		LCD.drawString("Muu: ei", 0, 6);
+		LCD.drawString("ESCAPE: sammuta", 0, 6);
 		int nappula = Button.waitForPress();
 		LCD.clear();
 		if (nappula == 4) { 
@@ -85,7 +91,7 @@ public class Saveltaja {
 		Motor.C.stop();
 		tiedostot.suljeUlos();
 		LCD.clear();
-		LCD.drawString("Wau!", 0, 0);
+		LCD.drawString("Wau!", 6, 3);
 		Delay.msDelay(2000);
 		LCD.clear();
 	}
@@ -137,11 +143,11 @@ public class Saveltaja {
 	public boolean lopetus() {
 		LCD.drawString("Soitanko ", 0, 1);
 		LCD.drawString("laulusi? ", 0, 2);
-		LCD.drawString("Vasen: ei, ", 0, 3);
-		LCD.drawString("lopeta ohjelma ", 2, 4);
-		LCD.drawString("Oikea: joo ", 0, 5);
-		LCD.drawString("Muu: lauletaan ", 0, 6);
-		LCD.drawString("uusi ", 5, 7);
+		LCD.drawString("Oikea: joo ", 0, 3);
+		LCD.drawString("Vasen: ei, ", 0, 4);
+		LCD.drawString("lopeta ohjelma ", 2, 5);
+		LCD.drawString("ENTER: lauletaan ", 0, 6);
+		LCD.drawString("uusi ", 7, 7);
 		int nappula = Button.waitForPress();
 		LCD.clear();
 		if (nappula == 4) {
@@ -161,7 +167,7 @@ public class Saveltaja {
 		int matka = us.getDistance();
 		if (matka < offset) {
 			suuntaa();
-		} else if (matka < offset*2){ //hidastetaan seinänä lähestyessä
+		} else if (matka < offset*2){ //hidastetaan seinän lähestyessä
 			Motor.A.setSpeed(nopeus/3);
 			Motor.C.setSpeed(nopeus/3);
 		} else if (matka < offset*5) {
@@ -175,7 +181,7 @@ public class Saveltaja {
 
 	public void soita() {
 		tooni = tooni -offset;
-		tooni = nuotit.soitaNuotti(tooni);
+		tooni = nuotit.soitaNuotti(tooni, korkeus);
 		tiedostot.kirjoitaIndeksi(tooni);
 		System.out.println(nuotit.getNuotti(tooni));
 		Delay.msDelay(nuotit.kesto);
@@ -212,6 +218,9 @@ public class Saveltaja {
 	}
 	
 	public void soitaSavellykset() {
+		if (!onkoVanhoja()) {
+			return;
+		}
 		int indeksi = 0;
 		for (int i=0; i<savellysnro; i++) {
 			tiedostot.lueTiedosto(i);
@@ -221,8 +230,8 @@ public class Saveltaja {
 			while (true) {
 				indeksi = tiedostot.lueNuotti();
 				if (indeksi >= 0) {
-					Sound.playTone((int)(nuotit.getTaajuus(indeksi)*korkeus), 500);
-					Delay.msDelay(500);
+					nuotit.soitaNuotti(indeksi, korkeus);
+					Delay.msDelay(nuotit.kesto);
 				} else {
 					break;
 				}

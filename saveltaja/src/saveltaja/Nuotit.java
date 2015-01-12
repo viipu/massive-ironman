@@ -35,13 +35,13 @@ public class Nuotit {
 		4186.01f, 4434.92f, 4698.63f, 4978.03f, 5274.04f, 5587.65f, 5919.91f, 6271.93f, 6644.88f, 7040.0f, 7458.62f, 7902.13f 
 		};
 
-	public int soitaNuotti(int monesko) {
+	public int soitaNuotti(int monesko, int korkeus) {
 		if (monesko > taajuudet.length - 1) {
-			return soitaNuotti(taajuudet.length - 1);
+			return soitaNuotti(taajuudet.length - 1, korkeus);
 		} else if (monesko < 0) {
-			return soitaNuotti(0);
+			return soitaNuotti(0, korkeus);
 		}
-		Sound.playTone((int) taajuudet[monesko], kesto);
+		Sound.playTone((int) (korkeus*taajuudet[monesko]), kesto);
 		return monesko;
 	}
 	public float soitaNuotti(String nuotti) {
