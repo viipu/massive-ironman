@@ -11,7 +11,7 @@ public class Nuotit {
 	 * http://www.phy.mtu.edu/~suits/notefreqs.html
 	 * (Accessed 11/01/2015)
 	 */
-	private int kesto = 500; 
+	public int kesto = 500; 
 	private static String[] nuotit = { 
 		"C0", "C#0", "D0", "D#0", "E0", "F0", "F#0", "G0", "G#0", "A0", "A#0", "B0", 
 		"C1", "C#1", "D1", "D#1", "E1", "F1", "F#1", "G1", "G#1", "A1", "A#1", "B1", 
@@ -35,14 +35,14 @@ public class Nuotit {
 		4186.01f, 4434.92f, 4698.63f, 4978.03f, 5274.04f, 5587.65f, 5919.91f, 6271.93f, 6644.88f, 7040.0f, 7458.62f, 7902.13f 
 		};
 
-	public String soitaNuotti(int monesko) {
+	public int soitaNuotti(int monesko) {
 		if (monesko > taajuudet.length - 1) {
 			return soitaNuotti(taajuudet.length - 1);
 		} else if (monesko < 0) {
 			return soitaNuotti(0);
 		}
 		Sound.playTone((int) taajuudet[monesko], kesto);
-		return nuotit[monesko];
+		return monesko;
 	}
 	public float soitaNuotti(String nuotti) {
 		float taajuus = getTaajuus(nuotti);

@@ -14,18 +14,27 @@ public class Saveltaja {
 	int offset = 10; // esteiden väistämisen raja-arvo
 	int savellysnro = 0;
 	int kesto = 0;
+	int nopeus = 360;
 
 	public static void main(String[] args) throws Exception {
-		Sound.setVolume(30);
-		Motor.A.setSpeed(360);
-		Motor.C.setSpeed(360);
-		Motor.B.setSpeed(180);
-
-		Saveltaja saveltaja = new Saveltaja();
+        new Thread(new Runnable() { 
+            public void run() {
+                while(true) {
+                    if (Button.waitForPress() == Button.ID_ESCAPE) {
+                        NXT.shutDown();
+                    }
+                }
+            }
+        }).start();
+        Saveltaja saveltaja = new Saveltaja();
 		saveltaja.run();
 	}
 
 	public void run() {
+		Sound.setVolume(50);
+		Motor.A.setSpeed(nopeus);
+		Motor.C.setSpeed(nopeus);
+		Motor.B.setSpeed(180);
 		boolean loppu = alku();
 		while(!Button.ENTER.isPressed()) {
 			if (loppu) {
@@ -149,8 +158,15 @@ public class Saveltaja {
 		Motor.A.backward();
 		Motor.C.backward();
 		koskettaako();
-		if (us.getDistance() < offset) {
+		int matka = us.getDistance();
+		if (matka < offset) {
 			suuntaa();
+		} else if (matka < offset*2){ //hidastetaan seinänä lähestyessä
+			Motor.A.setSpeed(nopeus/3);
+			Motor.C.setSpeed(nopeus/3);
+		} else if (matka < offset*5) {
+			Motor.A.setSpeed(nopeus/3*2);
+			Motor.C.setSpeed(nopeus/3*2);
 		}
 		tooni = us.getDistance();
 		soita();
@@ -159,16 +175,17 @@ public class Saveltaja {
 
 	public void soita() {
 		tooni = tooni -offset;
-		nuotit.getTaajuus(tooni);
+		tooni = nuotit.soitaNuotti(tooni);
 		tiedostot.kirjoitaIndeksi(tooni);
 		System.out.println(nuotit.getNuotti(tooni));
-		Sound.playTone((int)(nuotit.getTaajuus(tooni)*korkeus), 500);
-		Delay.msDelay(500);
+		Delay.msDelay(nuotit.kesto);
 	}
 
 	public void suuntaa() {
 		Motor.A.stop();
 		Motor.C.stop();
+		Motor.A.setSpeed(nopeus);
+		Motor.C.setSpeed(nopeus);
 		
 		Motor.B.rotate(90); //sensori vasemmalle
 		int etaisyys = us.getDistance();
