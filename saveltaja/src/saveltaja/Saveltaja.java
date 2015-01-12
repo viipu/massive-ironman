@@ -161,18 +161,20 @@ public class Saveltaja {
 	}
 
 	public void liiku() {
+		int matka = us.getDistance();
+		if (matka > offset*3){ //nopeutetaan taas
+			Motor.A.setSpeed(nopeus);
+			Motor.C.setSpeed(nopeus);
+		}
 		Motor.A.backward();
 		Motor.C.backward();
 		koskettaako();
-		int matka = us.getDistance();
+		matka = us.getDistance();
 		if (matka < offset) {
 			suuntaa();
-		} else if (matka < offset*2){ //hidastetaan seinän lähestyessä
+		} else if (matka < offset*3){ //hidastetaan seinän lähestyessä
 			Motor.A.setSpeed(nopeus/3);
 			Motor.C.setSpeed(nopeus/3);
-		} else if (matka < offset*5) {
-			Motor.A.setSpeed(nopeus/3*2);
-			Motor.C.setSpeed(nopeus/3*2);
 		}
 		tooni = us.getDistance();
 		soita();
